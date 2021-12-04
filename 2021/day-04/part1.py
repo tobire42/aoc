@@ -43,6 +43,20 @@ def check_boards_for_bingo(boards, numbers_called):
                 print("Bingo!")
                 return board, slice
 
+def find_last_bingo(boards, numbers_called):
+    slices = [numbers_called[:x] for x in range(1, len(numbers_called))]
+    remaining_boards = boards.copy()
+
+    for slice in slices:
+        for board in remaining_boards:
+            bingo = check_for_bingo(board, slice)
+            if bingo:
+                if len(remaining_boards) == 1:
+                    return board, slice
+                remaining_boards.remove(board)
+
+
+
 def calculate_unmarked_numbers_sum(board, marked_numbers):
     unmarked_numbers = []
     for row in board:
@@ -58,9 +72,15 @@ def run():
     unmarked_numbers_sum = calculate_unmarked_numbers_sum(board, slice)
     
     score = unmarked_numbers_sum * slice[-1]
-    print(score)
+    print(f"Part 1 Score / Winnig Board: {score}")
 
+    # Part 2
+    board, slice = find_last_bingo(boards, numbers_called)
 
+    unmarked_numbers_sum = calculate_unmarked_numbers_sum(board, slice)
+    
+    score = unmarked_numbers_sum * slice[-1]
+    print(f"Part 2 Score / Last Winning Board: {score}")    
 
 if __name__ == "__main__":
     run()
