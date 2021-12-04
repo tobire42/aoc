@@ -43,17 +43,21 @@ def check_boards_for_bingo(boards, numbers_called):
                 print("Bingo!")
                 return board, slice
 
+def calculate_unmarked_numbers_sum(board, marked_numbers):
+    unmarked_numbers = []
+    for row in board:
+        unmarked_numbers += [col for col in row if col not in marked_numbers]
+    return sum(unmarked_numbers)
+
 def run():
     boards, numbers_called = read_input()
     board, slice = check_boards_for_bingo(boards, numbers_called)
     pprint.pprint(board)
     print(slice)
 
-    unmarked_numbers = []
-    for row in board:
-        unmarked_numbers += [col for col in row if col not in slice]
+    unmarked_numbers_sum = calculate_unmarked_numbers_sum(board, slice)
     
-    score = sum(unmarked_numbers) * slice[-1]
+    score = unmarked_numbers_sum * slice[-1]
     print(score)
 
 
